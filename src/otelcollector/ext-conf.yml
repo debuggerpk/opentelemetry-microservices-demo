@@ -1,0 +1,33 @@
+extensions:
+  otel_with_custom_auth:
+    token: "API-KEY loFqNiZHXW5lBJw9VRwZkB.0rAXsEDeAK0gFihzdsmbJA.alaETSD8KN594vO3lIf6Nz1gy21W0xgbChsUBuGeLxhBz3a8yUGGfLwBq8KymYjC8cgNsA6JWntB57yeQTFfo3A"
+
+receivers: # this is required.
+  otlp:
+    protocols:
+      http:
+        auth:
+          authenticator: otel_with_custom_auth
+      grpc: # TODO: add authentication service for this too and check the results.
+
+processors:
+
+exporters: # this is also required.
+  logging:
+    logLevel: debug
+  jaeger:
+    endpoint: "jaeger:14250"
+    tls:
+      insecure: true
+
+service:
+  extensions:
+    - otel_with_custom_auth
+  pipelines:
+    traces:
+      receivers:
+        - otlp
+      processors: []
+      exporters:
+        - logging
+        - jaeger
