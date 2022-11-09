@@ -72,6 +72,7 @@ docker run -d --rm --network="$networkName" --name jaeger \
 
 containername="$otelCollectorName"
 docker run -d --rm --network="$networkName" \
+     -e HTTP_HOST=http://ctrlplane-api:8000/ \
      --name "$otelCollectorName" \
      "$otelCollectorName:$TAG" >&2 || true
 
